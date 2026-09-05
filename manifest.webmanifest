@@ -1,0 +1,15 @@
+{
+  "name": "轻提纲",
+  "short_name": "轻提纲",
+  "description": "按住蜜桃做提肛练习的健康小助手",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#edf5f0",
+  "theme_color": "#edf5f0",
+  "icons": [
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
