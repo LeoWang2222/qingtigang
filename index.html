@@ -32,8 +32,10 @@ body{
   user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
   overscroll-behavior:none;
 }
+body.locked{overflow:hidden;position:fixed;width:100%;}
 .page{display:none;min-height:100vh;min-height:100dvh;padding:calc(var(--sat) + 14px) 16px calc(76px + var(--sab));}
-.page.active{display:block;}
+.page.active{display:block;animation:pagein .3s cubic-bezier(.22,.8,.36,1);}
+@keyframes pagein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .card{background:var(--card);border-radius:20px;padding:18px;box-shadow:0 4px 18px rgba(23,58,48,.05);}
 h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .sec-title{font-size:17px;font-weight:700;margin:22px 4px 10px;}
@@ -43,14 +45,15 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .status-card{display:flex;justify-content:space-between;gap:10px;}
 .badge{display:inline-block;background:var(--green-soft);color:var(--green2);font-size:12px;
   padding:3px 10px;border-radius:99px;margin-left:8px;vertical-align:middle;}
-.status-card h2{font-size:20px;margin:10px 0 4px;}
+.status-card h2{font-size:20px;margin:10px 0 4px;transition:opacity .3s;}
 .status-card p{font-size:13px;color:var(--sub);line-height:1.5;}
 .progress-box{margin-top:16px;background:#f5faf7;border-radius:14px;padding:14px;min-width:130px;}
 .progress-box .lab{font-size:12px;color:var(--sub);}
 .progress-box .num{font-size:30px;font-weight:800;color:var(--green2);margin:2px 0;}
 .progress-box .num small{font-size:16px;color:var(--sub);font-weight:500;}
 .progress-box .tip2{font-size:12px;color:var(--sub);line-height:1.4;}
-.mascot-home{width:104px;flex-shrink:0;align-self:center;}
+.mascot-home{width:104px;flex-shrink:0;align-self:center;animation:floaty 3.2s ease-in-out infinite;}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
 /* ===== 事项行 ===== */
 .task-row{display:flex;align-items:center;gap:12px;padding:14px 2px;cursor:pointer;}
@@ -61,8 +64,8 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .task-info div{font-size:12px;color:var(--sub);margin-top:3px;}
 .pill{background:var(--green-soft);color:var(--green2);font-size:13px;padding:6px 12px;border-radius:99px;white-space:nowrap;}
 .btn-plus{background:var(--green);color:#fff;border:none;font-size:17px;font-weight:700;
-  width:64px;height:40px;border-radius:99px;cursor:pointer;}
-.btn-plus:active{transform:scale(.94);}
+  width:64px;height:40px;border-radius:99px;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease;}
+.btn-plus:active{transform:scale(.9);box-shadow:0 0 0 6px rgba(13,94,74,.12);}
 .plan-cycle{display:inline-block;background:var(--green-soft);color:var(--green2);font-size:11px;border-radius:6px;padding:3px 8px;margin-top:6px;}
 
 /* ===== 提醒条 ===== */
@@ -73,46 +76,64 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 /* ===== 底部标签 ===== */
 .tabbar{position:fixed;left:0;right:0;bottom:0;background:#fff;display:flex;
   padding:8px 0 calc(8px + var(--sab));box-shadow:0 -2px 14px rgba(23,58,48,.06);z-index:20;}
-.tabbar .tab{flex:1;text-align:center;font-size:11px;color:#93aaa1;cursor:pointer;}
-.tabbar .tab .ic{font-size:22px;display:block;margin-bottom:2px;}
+.tabbar .tab{flex:1;text-align:center;font-size:11px;color:#93aaa1;cursor:pointer;transition:color .2s;}
+.tabbar .tab .ic{font-size:22px;display:block;margin-bottom:2px;transition:transform .2s;}
 .tabbar .tab.on{color:var(--green2);font-weight:600;}
+.tabbar .tab.on .ic{transform:translateY(-2px) scale(1.12);}
 
 /* ===== 练习页 ===== */
 #pg-exercise{background:linear-gradient(180deg,#edf5f0 0%,#f6fbf8 100%);text-align:center;}
 .ex-head{display:flex;align-items:center;margin-bottom:4px;}
 .ex-head .back{font-size:26px;color:var(--text);background:none;border:none;cursor:pointer;width:44px;text-align:left;}
 .ex-head .t{flex:1;font-size:17px;font-weight:600;margin-right:44px;}
-.ex-char{font-size:72px;font-weight:800;color:var(--green);margin:14px 0 0;}
-.ex-count{font-size:17px;color:var(--green2);font-weight:600;margin-bottom:6px;}
+.ex-char{font-size:72px;font-weight:800;color:var(--green);margin:10px 0 0;transition:transform .18s ease;}
+.ex-char.zoom{transform:scale(1.12);}
+.ex-count{font-size:17px;color:var(--green2);font-weight:600;margin-bottom:2px;}
 
-.peach-wrap{width:250px;height:250px;margin:8px auto 0;border-radius:50%;
-  background:radial-gradient(circle,#fff 0%,#eaf6ef 70%,transparent 72%);
-  display:flex;align-items:center;justify-content:center;position:relative;touch-action:none;}
-.peach{width:180px;transition:transform .12s ease;filter:drop-shadow(0 10px 18px rgba(255,143,109,.35));}
+.peach-wrap{width:260px;height:260px;margin:6px auto 0;border-radius:50%;position:relative;touch-action:none;}
+.prog{position:absolute;inset:0;transform:rotate(-90deg);pointer-events:none;}
+.prog circle{fill:none;stroke-width:7;stroke-linecap:round;}
+.prog .prog-bg{stroke:#dcece3;}
+.prog .prog-fg{stroke:var(--green2);stroke-dasharray:754;stroke-dashoffset:754;}
+.peach-wrap.rest .prog-fg{stroke:#e8a24b;}
+.peach-inner{position:absolute;inset:18px;border-radius:50%;
+  background:radial-gradient(circle,#fff 0%,#eaf6ef 72%,transparent 74%);
+  display:flex;align-items:center;justify-content:center;}
+.peach{width:176px;transition:transform .15s cubic-bezier(.34,1.4,.64,1);filter:drop-shadow(0 10px 18px rgba(255,143,109,.35));}
 .peach-wrap.hold .peach{transform:scale(.84,.78);animation:wiggle .5s ease-in-out infinite;}
 @keyframes wiggle{0%,100%{transform:scale(.84,.78)}50%{transform:scale(.80,.74)}}
-.peach-wrap .ring{position:absolute;inset:8px;border-radius:50%;border:3px solid var(--green-soft2);}
-.peach-wrap.hold .ring{animation:ringpulse 1s ease-out infinite;}
-@keyframes ringpulse{0%{transform:scale(.92);opacity:.9}100%{transform:scale(1.05);opacity:0}}
-.face-sq,.face-nm{transition:opacity .1s;}
+.face-sq,.face-nm{transition:opacity .12s;}
 .peach-wrap.hold .face-nm{opacity:0;}
 .peach-wrap.hold .face-sq{opacity:1;}
 .face-sq{opacity:0;}
 
 .ex-hint{display:inline-flex;align-items:center;gap:6px;background:var(--green-soft);color:var(--green2);
-  font-size:15px;padding:9px 18px;border-radius:99px;margin-top:14px;font-weight:600;
-  max-width:92%;min-height:38px;justify-content:center;transition:opacity .3s;}
-.ex-hint.encourage{background:#fdf3e7;color:#c07a2e;animation:encpop .4s ease;}
-@keyframes encpop{0%{transform:scale(.92);opacity:.4}100%{transform:scale(1);opacity:1}}
-.ex-timer{font-size:56px;font-weight:800;color:var(--green);margin-top:14px;font-variant-numeric:tabular-nums;height:64px;}
+  font-size:15px;padding:9px 18px;border-radius:99px;margin-top:16px;font-weight:600;
+  max-width:92%;min-height:38px;justify-content:center;transition:opacity .22s ease, background .3s, color .3s;}
+.ex-hint.encourage{background:#fdf3e7;color:#c07a2e;}
+.ex-timer{font-size:56px;font-weight:800;color:var(--green);margin-top:12px;font-variant-numeric:tabular-nums;height:64px;transition:transform .15s ease;}
+.ex-timer.pulse{transform:scale(1.1);}
 .ex-state{font-size:14px;color:var(--green2);min-height:20px;}
 .ex-state .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green2);margin-right:6px;animation:blink 1s infinite;}
 @keyframes blink{50%{opacity:.2}}
-.ex-tips{margin-top:20px;background:#fff;border-radius:14px;padding:12px 14px;font-size:13px;color:var(--sub);text-align:left;line-height:1.5;}
+.ex-tips{margin-top:18px;background:#fff;border-radius:14px;padding:12px 14px;font-size:13px;color:var(--sub);text-align:left;line-height:1.5;}
 .ex-tips b{color:var(--green2);}
-.ex-toast{position:fixed;left:50%;top:38%;transform:translateX(-50%);background:rgba(23,58,48,.88);color:#fff;
-  padding:12px 22px;border-radius:14px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;white-space:nowrap;}
-.ex-toast.show{opacity:1;}
+.ex-toast{position:fixed;left:50%;top:38%;transform:translateX(-50%) translateY(6px);background:rgba(23,58,48,.88);color:#fff;
+  padding:12px 22px;border-radius:14px;font-size:15px;opacity:0;pointer-events:none;
+  transition:opacity .25s, transform .25s;z-index:50;white-space:nowrap;}
+.ex-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ===== 庆祝动效 ===== */
+.celebrate{position:fixed;inset:0;background:rgba(237,245,240,.92);z-index:60;display:none;
+  align-items:center;justify-content:center;flex-direction:column;backdrop-filter:blur(3px);}
+.celebrate.show{display:flex;}
+.c-peach{font-size:88px;animation:cbounce .7s cubic-bezier(.34,1.56,.64,1);}
+@keyframes cbounce{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.c-txt{font-size:22px;font-weight:800;color:var(--green);margin-top:16px;animation:cfade .5s .25s both;}
+.c-sub{font-size:14px;color:var(--sub);margin-top:8px;animation:cfade .5s .4s both;}
+@keyframes cfade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.c-part{position:absolute;font-size:26px;top:-40px;animation:cfall linear both;}
+@keyframes cfall{to{transform:translateY(110vh) rotate(340deg);opacity:.9;}}
 
 /* ===== 打卡页 ===== */
 .ck-stats{display:flex;gap:10px;margin-top:2px;}
@@ -122,7 +143,8 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .cal-head b{font-size:16px;}
 .cal-head .nav{background:var(--green-soft);color:var(--green2);border:none;width:36px;height:36px;
-  border-radius:50%;font-size:18px;cursor:pointer;}
+  border-radius:50%;font-size:18px;cursor:pointer;transition:transform .12s;}
+.cal-head .nav:active{transform:scale(.88);}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
 .cal-grid .wk{text-align:center;font-size:11px;color:var(--sub);padding:4px 0;}
 .cal-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;
@@ -132,6 +154,8 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .cal-cell.done{background:var(--green2);color:#fff;font-weight:700;}
 .cal-cell.done::after{content:"✓";position:absolute;font-size:10px;bottom:2px;opacity:.9;}
 .cal-cell.today.done{border-color:var(--green);}
+.cal-cell.pop{animation:ckpop .45s cubic-bezier(.34,1.56,.64,1);}
+@keyframes ckpop{0%{transform:scale(.4);background:#bfe3d2;}60%{transform:scale(1.18)}100%{transform:scale(1)}}
 .cal-legend{display:flex;gap:16px;justify-content:center;margin-top:14px;font-size:12px;color:var(--sub);}
 .cal-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle;}
 .ck-note{margin-top:16px;text-align:center;font-size:13px;color:var(--sub);line-height:1.6;}
@@ -144,7 +168,8 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .stat b{font-size:22px;color:var(--green2);display:block;}
 .stat span{font-size:11px;color:var(--sub);}
 .ghost-btn{display:block;width:100%;background:#fff;color:#c05b4d;border:1px solid #f0d8d4;border-radius:99px;
-  padding:14px;font-size:14px;margin-top:16px;cursor:pointer;}
+  padding:14px;font-size:14px;margin-top:16px;cursor:pointer;transition:transform .12s;}
+.ghost-btn:active{transform:scale(.97);}
 .ver{text-align:center;font-size:11px;color:#aec4bb;margin-top:18px;}
 </style>
 </head>
@@ -221,31 +246,36 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
   <div class="ex-count">第 <span id="ex-rep">1</span> / 10 次</div>
 
   <div class="peach-wrap" id="peach-wrap">
-    <div class="ring"></div>
-    <svg class="peach" viewBox="0 0 200 200">
-      <defs><radialGradient id="pg2" cx="50%" cy="35%" r="75%">
-        <stop offset="0%" stop-color="#ffd9c4"/><stop offset="100%" stop-color="#ff8f6d"/>
-      </radialGradient></defs>
-      <ellipse cx="100" cy="46" rx="7" ry="14" fill="#3f9d63" transform="rotate(-18 100 46)"/>
-      <ellipse cx="114" cy="48" rx="7" ry="13" fill="#57b87e" transform="rotate(24 114 48)"/>
-      <circle cx="100" cy="34" r="5" fill="#fff"/><circle cx="91" cy="38" r="5" fill="#fff"/>
-      <circle cx="109" cy="38" r="5" fill="#fff"/><circle cx="100" cy="39" r="3.4" fill="#ffd25e"/>
-      <path d="M100 62 C45 62 34 128 62 162 C80 184 94 182 100 172 C106 182 120 184 138 162 C166 128 155 62 100 62 Z" fill="url(#pg2)"/>
-      <path d="M100 66 C96 105 96 138 100 168" stroke="#f2876b" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/>
-      <g class="face-nm">
-        <circle cx="76" cy="118" r="6.5" fill="#3a2a26"/>
-        <circle cx="124" cy="118" r="6.5" fill="#3a2a26"/>
-        <circle cx="78.5" cy="115.5" r="2.2" fill="#fff"/><circle cx="126.5" cy="115.5" r="2.2" fill="#fff"/>
-        <path d="M92 132 Q100 140 108 132" stroke="#3a2a26" stroke-width="3" fill="none" stroke-linecap="round"/>
-      </g>
-      <g class="face-sq">
-        <path d="M66 112 L82 118 L66 124" stroke="#3a2a26" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M134 112 L118 118 L134 124" stroke="#3a2a26" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M94 132 Q100 128 106 132 Q100 139 94 132 Z" fill="#3a2a26"/>
-      </g>
-      <ellipse cx="64" cy="132" rx="8" ry="4.5" fill="#ff8f6d" opacity=".5"/>
-      <ellipse cx="136" cy="132" rx="8" ry="4.5" fill="#ff8f6d" opacity=".5"/>
+    <svg class="prog" viewBox="0 0 260 260">
+      <circle class="prog-bg" cx="130" cy="130" r="120"/>
+      <circle class="prog-fg" id="prog-fg" cx="130" cy="130" r="120"/>
     </svg>
+    <div class="peach-inner">
+      <svg class="peach" viewBox="0 0 200 200">
+        <defs><radialGradient id="pg2" cx="50%" cy="35%" r="75%">
+          <stop offset="0%" stop-color="#ffd9c4"/><stop offset="100%" stop-color="#ff8f6d"/>
+        </radialGradient></defs>
+        <ellipse cx="100" cy="46" rx="7" ry="14" fill="#3f9d63" transform="rotate(-18 100 46)"/>
+        <ellipse cx="114" cy="48" rx="7" ry="13" fill="#57b87e" transform="rotate(24 114 48)"/>
+        <circle cx="100" cy="34" r="5" fill="#fff"/><circle cx="91" cy="38" r="5" fill="#fff"/>
+        <circle cx="109" cy="38" r="5" fill="#fff"/><circle cx="100" cy="39" r="3.4" fill="#ffd25e"/>
+        <path d="M100 62 C45 62 34 128 62 162 C80 184 94 182 100 172 C106 182 120 184 138 162 C166 128 155 62 100 62 Z" fill="url(#pg2)"/>
+        <path d="M100 66 C96 105 96 138 100 168" stroke="#f2876b" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/>
+        <g class="face-nm">
+          <circle cx="76" cy="118" r="6.5" fill="#3a2a26"/>
+          <circle cx="124" cy="118" r="6.5" fill="#3a2a26"/>
+          <circle cx="78.5" cy="115.5" r="2.2" fill="#fff"/><circle cx="126.5" cy="115.5" r="2.2" fill="#fff"/>
+          <path d="M92 132 Q100 140 108 132" stroke="#3a2a26" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="face-sq">
+          <path d="M66 112 L82 118 L66 124" stroke="#3a2a26" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M134 112 L118 118 L134 124" stroke="#3a2a26" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M94 132 Q100 128 106 132 Q100 139 94 132 Z" fill="#3a2a26"/>
+        </g>
+        <ellipse cx="64" cy="132" rx="8" ry="4.5" fill="#ff8f6d" opacity=".5"/>
+        <ellipse cx="136" cy="132" rx="8" ry="4.5" fill="#ff8f6d" opacity=".5"/>
+      </svg>
+    </div>
   </div>
 
   <div class="ex-hint" id="ex-hint">👆 按住蜜桃，开始收紧</div>
@@ -255,6 +285,13 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
   <div class="ex-tips"><b>💡 小贴士</b>　提肛不憋气，每次收紧保持 <span id="hold-sec-txt">5</span> 秒，循序渐进更有效。按住=收紧，松开=放松。</div>
 </div>
 <div class="ex-toast" id="ex-toast"></div>
+
+<!-- 庆祝动效 -->
+<div class="celebrate" id="celebrate">
+  <div class="c-peach">🍑</div>
+  <div class="c-txt" id="c-txt">完成 1 组！</div>
+  <div class="c-sub" id="c-sub">做得很棒，继续保持～</div>
+</div>
 
 <!-- ================= 打卡页 ================= -->
 <div class="page" id="pg-checkin">
@@ -331,14 +368,13 @@ function today(){return dstr(new Date());}
 var S;
 function load(){
   try{S=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){S={};}
-  // 从旧版本(v1)迁移设置
   if(!S._migrated){
     try{
       var old=JSON.parse(localStorage.getItem("qingtigang_v1"));
       if(old){
         if(old.kegelTarget)S.kegelTarget=old.kegelTarget;
         if(old.holdSec)S.holdSec=old.holdSec;
-        if(old.days>1){ // 把旧版坚持天数折算成历史打卡
+        if(old.days>1){
           var d=new Date();
           for(var i=1;i<old.days;i++){d.setDate(d.getDate()-1);S.checkins=S.checkins||{};S.checkins[dstr(d)]=true;}
         }
@@ -359,7 +395,7 @@ load();
 
 function streak(){
   var n=0,d=new Date();
-  if(!S.checkins[dstr(d)])d.setDate(d.getDate()-1); // 今天未达标则从昨天往前数
+  if(!S.checkins[dstr(d)])d.setDate(d.getDate()-1);
   while(S.checkins[dstr(d)]){n++;d.setDate(d.getDate()-1);}
   return n;
 }
@@ -367,12 +403,12 @@ function totalDays(){var n=0;for(var k in S.checkins)if(S.checkins[k])n++;return
 
 /* ---------- 震动 & 提示音 ---------- */
 var audioCtx=null;
-function beep(f,d){
+function beep(f,d,vol){
   try{
     if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
     var o=audioCtx.createOscillator(),g=audioCtx.createGain();
     o.frequency.value=f||660;o.type="sine";
-    g.gain.setValueAtTime(0.12,audioCtx.currentTime);
+    g.gain.setValueAtTime(vol||0.12,audioCtx.currentTime);
     g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+(d||0.12));
     o.connect(g);g.connect(audioCtx.destination);
     o.start();o.stop(audioCtx.currentTime+(d||0.12));
@@ -390,8 +426,24 @@ function haptic(){
     }
     hapticEl.click();
   }catch(e){}
-  try{if(navigator.vibrate)navigator.vibrate(30);}catch(e){}
+  try{if(navigator.vibrate)navigator.vibrate(20);}catch(e){}
 }
+
+/* ---------- 屏幕常亮 ---------- */
+var wakeLock=null;
+function lockScreen(){
+  try{
+    if(navigator.wakeLock){
+      navigator.wakeLock.request("screen").then(function(l){wakeLock=l;}).catch(function(){});
+    }
+  }catch(e){}
+}
+function unlockScreen(){
+  try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){}
+}
+document.addEventListener("visibilitychange",function(){
+  if(!document.hidden&&$("pg-exercise").classList.contains("active"))lockScreen();
+});
 
 /* ---------- 页面切换 ---------- */
 function show(id){
@@ -401,22 +453,39 @@ function show(id){
   var tabs=document.querySelectorAll(".tab");
   for(var j=0;j<tabs.length;j++)tabs[j].classList.toggle("on",tabs[j].getAttribute("data-page")===id);
   window.scrollTo(0,0);
+  document.body.classList.toggle("locked",id==="pg-exercise");
   if(id==="pg-checkin")renderCal();
+  if(id==="pg-exercise")lockScreen();else unlockScreen();
 }
 var tabs=document.querySelectorAll(".tab");
 for(var i=0;i<tabs.length;i++){
   tabs[i].addEventListener("click",function(){show(this.getAttribute("data-page"));});
 }
 
+/* ---------- 数字滚动 ---------- */
+function countUp(el,to){
+  var from=parseInt(el.textContent,10)||0;
+  if(from===to){el.textContent=to;return;}
+  var t0=performance.now();
+  function f(n){
+    var p=Math.min(1,(n-t0)/380);
+    el.textContent=Math.round(from+(to-from)*(1-Math.pow(1-p,3)));
+    if(p<1)requestAnimationFrame(f);
+  }
+  requestAnimationFrame(f);
+}
+
 /* ---------- 首页渲染 ---------- */
+var justCheckedKey=null;
 function goalMet(){return S.kegelGroups>=S.kegelTarget;}
 function render(){
   var done=S.kegelGroups,target=S.kegelTarget;
-  $("home-done").textContent=done;$("home-total").textContent=target;
+  countUp($("home-done"),done);
+  $("home-total").textContent=target;
   $("home-tip").textContent=goalMet()?"今日目标达成，已自动打卡！":"还差 "+(target-done)+" 组，加油！";
   $("home-cheer").textContent=goalMet()?"今日目标达成，太棒了！":(done>0?"继续保持，你很棒！":"新的一天，开始吧！");
   $("kegel-target-txt").textContent=target;
-  $("kegel-done-txt").textContent=done;
+  countUp($("kegel-done-txt"),done);
   $("plan-target-txt").textContent=target;
   $("plan-hold-txt").textContent=S.holdSec;
   var s=new Date(),e=new Date();e.setDate(e.getDate()+30);
@@ -460,7 +529,7 @@ function renderCal(){
     var w=document.createElement("div");w.className="wk";w.textContent=wks[i];g.appendChild(w);
   }
   var first=new Date(y,m,1);
-  var lead=(first.getDay()+6)%7; // 周一起始
+  var lead=(first.getDay()+6)%7;
   var prevDays=new Date(y,m,0).getDate();
   for(var p=lead-1;p>=0;p--){
     var c=document.createElement("div");c.className="cal-cell dim";c.textContent=prevDays-p;g.appendChild(c);
@@ -471,9 +540,13 @@ function renderCal(){
     var cell=document.createElement("div");cell.className="cal-cell";cell.textContent=d;
     var key=y+"-"+(m+1)+"-"+d;
     if(key===tstr)cell.classList.add("today");
-    if(S.checkins[key])cell.classList.add("done");
+    if(S.checkins[key]){
+      cell.classList.add("done");
+      if(key===justCheckedKey){cell.classList.add("pop");}
+    }
     g.appendChild(cell);
   }
+  justCheckedKey=null;
 }
 
 /* ---------- 下一条提醒倒计时 ---------- */
@@ -493,10 +566,7 @@ function tickRemind(){
 }
 setInterval(tickRemind,1000);tickRemind();
 
-/* ---------- 练习页：按住=收紧 ---------- */
-var REPS=10, REST_SEC=4;
-var ex={phase:"idle",rep:1,left:0,timer:null,encTimer:null,encStart:null};
-
+/* ---------- 鼓励语 ---------- */
 var ENCOURAGE=[
   "坚持住，你可以的！💪",
   "很好，保持这个力度～",
@@ -507,71 +577,136 @@ var ENCOURAGE=[
   "稳住，你比想象中更强！",
   "做得很好，继续保持～"
 ];
-var encIdx=0;
-function startEncourage(){
-  stopEncourage();
-  encIdx=Math.floor(Math.random()*ENCOURAGE.length);
-  ex.encTimer=setInterval(function(){
-    var h=$("ex-hint");
-    h.textContent=ENCOURAGE[encIdx%ENCOURAGE.length];
-    h.classList.remove("encourage");
-    void h.offsetWidth; // 重启动画
-    h.classList.add("encourage");
-    encIdx++;
-  },1600);
+var ex={phase:"idle",rep:1,raf:null,encTimer:null,encStart:null,encIdx:0};
+
+function swapHint(text,encourage){
+  var h=$("ex-hint");
+  h.style.opacity="0";
+  setTimeout(function(){
+    h.textContent=text;
+    h.classList.toggle("encourage",!!encourage);
+    h.style.opacity="1";
+  },180);
 }
-function stopEncourage(){
+function startEncourage(){
+  stopEncourage(true);
+  ex.encIdx=Math.floor(Math.random()*ENCOURAGE.length);
+  swapHint(ENCOURAGE[ex.encIdx],true);ex.encIdx++;
+  ex.encTimer=setInterval(function(){
+    swapHint(ENCOURAGE[ex.encIdx%ENCOURAGE.length],true);
+    ex.encIdx++;
+  },1700);
+}
+function stopEncourage(soft){
   clearTimeout(ex.encStart);
   clearInterval(ex.encTimer);
-  $("ex-hint").classList.remove("encourage");
+  if(!soft)$("ex-hint").classList.remove("encourage");
 }
+
+/* ---------- 进度环 ---------- */
+var RING_LEN=754; // 2π*120
+function setRing(frac){ // frac: 0空 → 1满
+  $("prog-fg").style.strokeDashoffset=RING_LEN*(1-frac);
+}
+function timerPulse(){
+  var t=$("ex-timer");
+  t.classList.remove("pulse");void t.offsetWidth;t.classList.add("pulse");
+}
+
+/* 以 rAF 驱动的丝滑阶段计时 */
+function runPhase(durMs,onSec,onDone){
+  var start=performance.now(),lastSec=-1;
+  function frame(now){
+    var remain=Math.max(0,durMs-(now-start));
+    setRing(1-remain/durMs);
+    var sec=Math.ceil(remain/1000);
+    if(sec!==lastSec){
+      lastSec=sec;
+      $("ex-timer").textContent=remain>0?sec:"";
+      timerPulse();
+      if(onSec)onSec(sec,remain);
+    }
+    if(remain<=0){ex.raf=null;setRing(0);onDone();return;}
+    ex.raf=requestAnimationFrame(frame);
+  }
+  ex.raf=requestAnimationFrame(frame);
+}
+function cancelPhase(){
+  if(ex.raf){cancelAnimationFrame(ex.raf);ex.raf=null;}
+  setRing(0);
+}
+
+/* ---------- 练习流程 ---------- */
+var REPS=10, REST_SEC=4;
 
 function exSet(phase){
   ex.phase=phase;
-  var wrap=$("peach-wrap"),ch=$("ex-char"),hint=$("ex-hint"),st=$("ex-state");
+  var wrap=$("peach-wrap"),ch=$("ex-char"),st=$("ex-state");
   wrap.classList.toggle("hold",phase==="hold");
+  wrap.classList.toggle("rest",phase==="release");
   if(phase==="idle"){
-    ch.textContent="收";hint.textContent="👆 按住蜜桃，开始收紧";
+    ch.textContent="收";swapHint("👆 按住蜜桃，开始收紧");
     $("ex-timer").textContent="";st.innerHTML="";
   }else if(phase==="hold"){
-    ch.textContent="收";hint.textContent="🌿 轻轻夹紧，保持呼吸。";
+    ch.textContent="收";
     st.innerHTML='<span class="dot"></span>保持中…';
   }else if(phase==="release"){
-    ch.textContent="放";hint.textContent="😌 松开手指，完全放松";
+    ch.textContent="放";swapHint("😌 松开手指，完全放松");
     st.innerHTML='<span class="dot"></span>休息中…';
   }else if(phase==="ready"){
-    ch.textContent="收";hint.textContent="👆 再次按住，开始下一次";
+    ch.textContent="收";swapHint("👆 再次按住，开始下一次");
     $("ex-timer").textContent="";st.innerHTML="";
   }
+  // 大字弹跳
+  ch.classList.remove("zoom");void ch.offsetWidth;ch.classList.add("zoom");
   $("ex-rep").textContent=Math.min(ex.rep,REPS);
 }
-function exCountdown(sec,onDone){
-  ex.left=sec;$("ex-timer").textContent=sec;
-  clearInterval(ex.timer);
-  ex.timer=setInterval(function(){
-    ex.left--;
-    if(ex.left<=0){clearInterval(ex.timer);$("ex-timer").textContent="";onDone();}
-    else{$("ex-timer").textContent=ex.left;if(ex.left<=3)beep(440,0.05);}
-  },1000);
-}
-function exStopTimers(){clearInterval(ex.timer);stopEncourage();}
 
 function startExercise(){
-  ex.rep=1;exStopTimers();exSet("idle");
+  ex.rep=1;cancelPhase();stopEncourage();exSet("idle");
   show("pg-exercise");
   var tabs=document.querySelectorAll(".tab");
   for(var j=0;j<tabs.length;j++)tabs[j].classList.remove("on");
 }
+
+function celebrate(checked){
+  var c=$("celebrate");
+  $("c-txt").textContent=checked?"今日打卡成功！":"完成 1 组！";
+  $("c-sub").textContent=checked?"连续 "+streak()+" 天，太稳了 🎉":"做得很棒，继续保持～";
+  // 飘落彩带
+  var emo=["🎉","✨","🍑","🌿","💪"];
+  for(var i=0;i<14;i++){
+    var p=document.createElement("span");
+    p.className="c-part";
+    p.textContent=emo[i%emo.length];
+    p.style.left=(Math.random()*96)+"%";
+    p.style.animationDuration=(1.1+Math.random()*0.9)+"s";
+    p.style.animationDelay=(Math.random()*0.4)+"s";
+    p.style.fontSize=(18+Math.random()*16)+"px";
+    c.appendChild(p);
+  }
+  c.classList.add("show");
+  setTimeout(function(){
+    c.classList.remove("show");
+    var ps=c.querySelectorAll(".c-part");
+    for(var j=0;j<ps.length;j++)ps[j].remove();
+    show("pg-home");
+  },2100);
+}
+
 function finishGroup(){
-  exStopTimers();exSet("idle");
+  cancelPhase();stopEncourage();exSet("idle");
   S.kegelGroups++;S.totalGroups++;
   var justChecked=false;
-  if(goalMet()&&!S.checkins[today()]){S.checkins[today()]=true;justChecked=true;}
+  if(goalMet()&&!S.checkins[today()]){
+    S.checkins[today()]=true;justChecked=true;justCheckedKey=today();
+  }
   save();render();
   haptic();beep(660,0.15);setTimeout(function(){beep(880,0.2);},160);
-  toast(justChecked?"🎉 完成 1 组，今日打卡成功！":"🎉 完成 1 组！共 "+REPS+" 次");
-  setTimeout(function(){show("pg-home");},1400);
+  setTimeout(function(){beep(990,0.25);},320);
+  celebrate(justChecked);
 }
+
 var toastT=null;
 function toast(msg){
   var t=$("ex-toast");t.textContent=msg;t.classList.add("show");
@@ -584,26 +719,34 @@ function onDown(ev){
   if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume();
   if(ex.phase!=="idle"&&ex.phase!=="ready")return;
   exSet("hold");haptic();beep(520,0.08);
-  ex.encStart=setTimeout(startEncourage,1600); // 先显示「保持呼吸」，随后开始鼓励
-  exCountdown(S.holdSec,function(){
+  swapHint("🌿 轻轻夹紧，保持呼吸。");
+  ex.encStart=setTimeout(startEncourage,1600);
+  runPhase(S.holdSec*1000,function(sec){
+    // 每秒轻震+最后3秒提示音
+    haptic();
+    if(sec<=3&&sec>0)beep(440,0.05,0.07);
+  },function(){
     if(ex.phase==="hold")ex.phase="waitRelease";
     stopEncourage();
-    $("ex-hint").textContent="🔔 可以松开了";
+    swapHint("🔔 可以松开了");
     $("ex-state").innerHTML="松开手指，放松一下";
-    haptic();beep(880,0.15);
+    haptic();setTimeout(haptic,120);
+    beep(880,0.15);
   });
 }
 function onUp(ev){
   if(ev)ev.preventDefault();
   if(ex.phase==="hold"){
-    exStopTimers();exSet("idle");
+    cancelPhase();stopEncourage();exSet("idle");
     toast("太早松开啦，这次不算，重新按住～");
     beep(300,0.15);
   }else if(ex.phase==="waitRelease"){
     ex.rep++;haptic();beep(760,0.08);
     if(ex.rep>REPS){finishGroup();return;}
     exSet("release");
-    exCountdown(REST_SEC,function(){exSet("ready");});
+    runPhase(REST_SEC*1000,function(sec){
+      if(sec<=2&&sec>0)beep(520,0.05,0.05);
+    },function(){exSet("ready");});
   }
 }
 wrap.addEventListener("pointerdown",onDown);
@@ -611,7 +754,7 @@ window.addEventListener("pointerup",onUp);
 window.addEventListener("pointercancel",onUp);
 wrap.addEventListener("contextmenu",function(e){e.preventDefault();});
 $("ex-back").addEventListener("click",function(){
-  exStopTimers();exSet("idle");show("pg-home");
+  cancelPhase();stopEncourage();exSet("idle");show("pg-home");
 });
 
 /* 防止双击缩放/滚动干扰 */
