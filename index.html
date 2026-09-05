@@ -22,7 +22,6 @@ if ("serviceWorker" in navigator && location.protocol === "https:") {
 :root{
   --green:#0d5e4a; --green2:#2f8a6b; --green-soft:#e3f2ea; --green-soft2:#d4ebdf;
   --bg:#edf5f0; --card:#ffffff; --text:#173a30; --sub:#7a938b;
-  --peach:#ffb59a; --peach2:#ff8f6d;
   --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -53,8 +52,8 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .progress-box .tip2{font-size:12px;color:var(--sub);line-height:1.4;}
 .mascot-home{width:104px;flex-shrink:0;align-self:center;}
 
-/* ===== 事项列表 ===== */
-.task-row{display:flex;align-items:center;gap:12px;padding:14px 2px;}
+/* ===== 事项行 ===== */
+.task-row{display:flex;align-items:center;gap:12px;padding:14px 2px;cursor:pointer;}
 .task-row + .task-row{border-top:1px solid #f0f5f2;}
 .task-ico{width:46px;height:46px;border-radius:50%;background:#f3f8f5;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
 .task-info{flex:1;min-width:0;}
@@ -64,14 +63,7 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .btn-plus{background:var(--green);color:#fff;border:none;font-size:17px;font-weight:700;
   width:64px;height:40px;border-radius:99px;cursor:pointer;}
 .btn-plus:active{transform:scale(.94);}
-
-/* ===== 计划卡 ===== */
-.plan-card{display:flex;align-items:center;gap:12px;}
-.plan-card .cnt{ text-align:right;}
-.plan-card .cnt b{font-size:24px;color:var(--green2);}
-.plan-card .cnt small{color:var(--sub);font-size:12px;display:block;}
 .plan-cycle{display:inline-block;background:var(--green-soft);color:var(--green2);font-size:11px;border-radius:6px;padding:3px 8px;margin-top:6px;}
-.chev{color:#b9cdc4;font-size:22px;}
 
 /* ===== 提醒条 ===== */
 .remind-card{display:flex;align-items:center;gap:12px;}
@@ -90,15 +82,14 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .ex-head{display:flex;align-items:center;margin-bottom:4px;}
 .ex-head .back{font-size:26px;color:var(--text);background:none;border:none;cursor:pointer;width:44px;text-align:left;}
 .ex-head .t{flex:1;font-size:17px;font-weight:600;margin-right:44px;}
-.ex-tag{display:inline-block;background:var(--green-soft);color:var(--green2);font-size:13px;padding:4px 14px;border-radius:99px;margin-top:8px;}
-.ex-char{font-size:72px;font-weight:800;color:var(--green);margin:6px 0 0;transition:transform .15s;}
+.ex-char{font-size:72px;font-weight:800;color:var(--green);margin:14px 0 0;}
 .ex-count{font-size:17px;color:var(--green2);font-weight:600;margin-bottom:6px;}
 
 .peach-wrap{width:250px;height:250px;margin:8px auto 0;border-radius:50%;
   background:radial-gradient(circle,#fff 0%,#eaf6ef 70%,transparent 72%);
   display:flex;align-items:center;justify-content:center;position:relative;touch-action:none;}
 .peach{width:180px;transition:transform .12s ease;filter:drop-shadow(0 10px 18px rgba(255,143,109,.35));}
-.peach-wrap.hold .peach{transform:scale(.84,.78) ;animation:wiggle .5s ease-in-out infinite;}
+.peach-wrap.hold .peach{transform:scale(.84,.78);animation:wiggle .5s ease-in-out infinite;}
 @keyframes wiggle{0%,100%{transform:scale(.84,.78)}50%{transform:scale(.80,.74)}}
 .peach-wrap .ring{position:absolute;inset:8px;border-radius:50%;border:3px solid var(--green-soft2);}
 .peach-wrap.hold .ring{animation:ringpulse 1s ease-out infinite;}
@@ -109,7 +100,10 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .face-sq{opacity:0;}
 
 .ex-hint{display:inline-flex;align-items:center;gap:6px;background:var(--green-soft);color:var(--green2);
-  font-size:15px;padding:9px 18px;border-radius:99px;margin-top:14px;font-weight:600;}
+  font-size:15px;padding:9px 18px;border-radius:99px;margin-top:14px;font-weight:600;
+  max-width:92%;min-height:38px;justify-content:center;transition:opacity .3s;}
+.ex-hint.encourage{background:#fdf3e7;color:#c07a2e;animation:encpop .4s ease;}
+@keyframes encpop{0%{transform:scale(.92);opacity:.4}100%{transform:scale(1);opacity:1}}
 .ex-timer{font-size:56px;font-weight:800;color:var(--green);margin-top:14px;font-variant-numeric:tabular-nums;height:64px;}
 .ex-state{font-size:14px;color:var(--green2);min-height:20px;}
 .ex-state .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green2);margin-right:6px;animation:blink 1s infinite;}
@@ -120,25 +114,27 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
   padding:12px 22px;border-radius:14px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;white-space:nowrap;}
 .ex-toast.show{opacity:1;}
 
-/* ===== 计划页 ===== */
-.plan-hero{padding-top:6px;}
-.plan-hero h2{font-size:23px;}
-.plan-hero p{font-size:13px;color:var(--sub);margin-top:6px;line-height:1.5;}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px;}
-.gitem{background:#f6faf7;border:1.5px dashed transparent;border-radius:16px;padding:16px 6px;text-align:center;cursor:pointer;}
-.gitem .ic{font-size:28px;}
-.gitem b{display:block;font-size:14px;margin-top:8px;}
-.gitem span{font-size:11px;color:var(--sub);}
-.gitem.dashed{border-color:#cfe4d9;background:#fbfefd;}
-.gitem.added{border-style:solid;border-color:var(--green2);background:var(--green-soft);}
-.advice{display:flex;gap:12px;align-items:flex-start;margin-top:10px;}
-.advice .ic{font-size:30px;background:var(--green-soft);border-radius:14px;width:54px;height:54px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.advice b{font-size:15px;}
-.advice p{font-size:13px;color:var(--sub);margin-top:5px;line-height:1.5;}
-.chk{display:inline-block;background:var(--green-soft);color:var(--green2);font-size:12px;border-radius:99px;padding:5px 12px;margin-top:10px;}
-.big-btn{display:block;width:100%;background:var(--green);color:#fff;border:none;border-radius:99px;
-  padding:16px;font-size:16px;font-weight:700;margin-top:22px;cursor:pointer;}
-.big-btn:active{transform:scale(.98);}
+/* ===== 打卡页 ===== */
+.ck-stats{display:flex;gap:10px;margin-top:2px;}
+.ck-stat{flex:1;background:var(--card);border-radius:16px;padding:14px 6px;text-align:center;box-shadow:0 4px 18px rgba(23,58,48,.05);}
+.ck-stat b{font-size:24px;color:var(--green2);display:block;}
+.ck-stat span{font-size:11px;color:var(--sub);}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cal-head b{font-size:16px;}
+.cal-head .nav{background:var(--green-soft);color:var(--green2);border:none;width:36px;height:36px;
+  border-radius:50%;font-size:18px;cursor:pointer;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.cal-grid .wk{text-align:center;font-size:11px;color:var(--sub);padding:4px 0;}
+.cal-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  font-size:14px;border-radius:50%;position:relative;color:var(--text);}
+.cal-cell.dim{color:#c3d4cc;}
+.cal-cell.today{border:2px solid var(--green2);font-weight:700;}
+.cal-cell.done{background:var(--green2);color:#fff;font-weight:700;}
+.cal-cell.done::after{content:"✓";position:absolute;font-size:10px;bottom:2px;opacity:.9;}
+.cal-cell.today.done{border-color:var(--green);}
+.cal-legend{display:flex;gap:16px;justify-content:center;margin-top:14px;font-size:12px;color:var(--sub);}
+.cal-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle;}
+.ck-note{margin-top:16px;text-align:center;font-size:13px;color:var(--sub);line-height:1.6;}
 
 /* ===== 我的 ===== */
 .me-head{display:flex;align-items:center;gap:14px;}
@@ -164,8 +160,8 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
       <p>每一点小坚持，都是未来更好的你</p>
       <div class="progress-box">
         <div class="lab">今日完成进度</div>
-        <div class="num"><span id="home-done">0</span><small> / <span id="home-total">2</span> 项</small></div>
-        <div class="tip2" id="home-tip">再接再厉，完成剩余 2 项吧！</div>
+        <div class="num"><span id="home-done">0</span><small> / <span id="home-total">3</span> 组</small></div>
+        <div class="tip2" id="home-tip">再接再厉吧！</div>
       </div>
     </div>
     <svg class="mascot-home" viewBox="0 0 200 200">
@@ -185,31 +181,26 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
     </svg>
   </div>
 
-  <div class="sec-title">今日重点事项</div>
+  <div class="sec-title">今日训练</div>
   <div class="card" style="padding:4px 18px;">
-    <div class="task-row" id="row-kegel" style="cursor:pointer;">
-      <div class="task-ico">🏋️</div>
-      <div class="task-info"><b>提肛练习</b><div>今日目标 <span id="kegel-target-txt">3</span> 组</div></div>
+    <div class="task-row" id="row-kegel">
+      <div class="task-ico">🍑</div>
+      <div class="task-info"><b>提肛练习</b><div>每组 10 次 · 今日目标 <span id="kegel-target-txt">3</span> 组</div></div>
       <span class="pill">已完成 <span id="kegel-done-txt">0</span> 组</span>
-      <button class="btn-plus" id="btn-go-ex">+1</button>
-    </div>
-    <div class="task-row" id="row-water" style="cursor:pointer;">
-      <div class="task-ico">💧</div>
-      <div class="task-info"><b>喝水提醒</b><div>今日目标 8 杯 / <span id="water-target-txt">1600</span>ml</div></div>
-      <span class="pill" id="water-pill">已喝 0ml</span>
+      <button class="btn-plus" id="btn-go-ex">开始</button>
     </div>
   </div>
 
-  <div class="sec-title">当前关注计划</div>
-  <div class="card plan-card" id="row-plan" style="cursor:pointer;">
-    <div class="task-ico">🏋️</div>
-    <div class="task-info">
-      <b>提肛养成计划</b>
-      <div>当前状态：日常管理，坚持就是胜利</div>
-      <span class="plan-cycle" id="plan-cycle-txt">计划周期：-</span>
+  <div class="sec-title">当前计划</div>
+  <div class="card">
+    <div class="task-row" id="row-plan">
+      <div class="task-ico">📋</div>
+      <div class="task-info">
+        <b>提肛养成计划</b>
+        <div>每天 <span id="plan-target-txt">3</span> 组 · 每次收紧 <span id="plan-hold-txt">5</span> 秒</div>
+        <span class="plan-cycle" id="plan-cycle-txt">计划周期：-</span>
+      </div>
     </div>
-    <div class="cnt"><small>今日完成</small><b><span id="plan-done">0</span>/<span id="plan-total">2</span></b></div>
-    <span class="chev">›</span>
   </div>
 
   <div class="sec-title">下一条提醒</div>
@@ -226,7 +217,6 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
     <button class="back" id="ex-back">‹</button>
     <div class="t">提肛练习</div>
   </div>
-  <span class="ex-tag">提肛练习</span>
   <div class="ex-char" id="ex-char">收</div>
   <div class="ex-count">第 <span id="ex-rep">1</span> / 10 次</div>
 
@@ -266,41 +256,27 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 </div>
 <div class="ex-toast" id="ex-toast"></div>
 
-<!-- ================= 计划页 ================= -->
-<div class="page" id="pg-plan">
-  <div class="plan-hero">
-    <h2>你的关注计划已生成 ✨</h2>
-    <p>我们已根据你的情况，为你生成专属的日常管理计划</p>
+<!-- ================= 打卡页 ================= -->
+<div class="page" id="pg-checkin">
+  <h1 class="appname">打卡</h1>
+  <div class="ck-stats">
+    <div class="ck-stat"><b id="ck-streak">0</b><span>连续打卡(天)</span></div>
+    <div class="ck-stat"><b id="ck-total">0</b><span>累计打卡(天)</span></div>
+    <div class="ck-stat"><b id="ck-groups">0</b><span>累计练习(组)</span></div>
   </div>
-  <div class="card" style="margin-top:16px;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span style="width:34px;height:34px;border-radius:50%;background:var(--green-soft);display:flex;align-items:center;justify-content:center;color:var(--green2);font-weight:800;">✓</span>
-      <div><b style="font-size:18px;">提肛养成计划</b> <span class="badge">日常管理</span>
-        <div style="font-size:12px;color:var(--sub);margin-top:3px;">根据当前状态生成，后续可在我的页面中调整</div>
-      </div>
+  <div class="card" style="margin-top:14px;">
+    <div class="cal-head">
+      <button class="nav" id="cal-prev">‹</button>
+      <b id="cal-title">-</b>
+      <button class="nav" id="cal-next">›</button>
     </div>
-    <div class="sec-title" style="margin:18px 0 0;">计划重点<span class="sec-sub">近期先从这些开始</span></div>
-    <div class="grid3">
-      <div class="gitem"><div class="ic">🏋️</div><b>提肛练习</b><span>增强肌力</span></div>
-      <div class="gitem"><div class="ic">💧</div><b>喝水提醒</b><span>保持水分</span></div>
-      <div class="gitem dashed" id="g-stand"><div class="ic">🧍</div><b>起身活动</b><span>点击添加</span></div>
-    </div>
-    <div class="sec-title" style="margin:20px 0 0;">可添加事项<span class="sec-sub">需要时可直接加入计划</span></div>
-    <div class="grid3">
-      <div class="gitem dashed addable"><div class="ic">🚽</div><b>大便记录</b><span>点击添加</span></div>
-      <div class="gitem dashed addable"><div class="ic">😊</div><b>身体感受记录</b><span>点击添加</span></div>
-      <div class="gitem dashed addable"><div class="ic">🌶️</div><b>喝酒吃辣标记</b><span>点击添加</span></div>
-    </div>
-    <div class="sec-title" style="margin:20px 0 0;">✚ 今日建议</div>
-    <div class="advice">
-      <div class="ic">🏋️</div>
-      <div><b>先完成 1 组提肛练习</b>
-        <p>选择不打扰自己的时间，先做轻量练习，不追求一次做太多。</p>
-        <span class="chk">✓ 完成后记得回来记录哦</span>
-      </div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="cal-legend">
+      <span><i style="background:var(--green2);"></i>已达标</span>
+      <span><i style="border:2px solid var(--green2);width:7px;height:7px;"></i>今天</span>
     </div>
   </div>
-  <button class="big-btn" id="btn-plan-go">进入首页，开始执行计划</button>
+  <div class="ck-note" id="ck-note">完成今日目标组数，即可自动打卡 ✓</div>
 </div>
 
 <!-- ================= 我的 ================= -->
@@ -313,19 +289,19 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
     </div>
     <div class="stat-grid">
       <div class="stat"><b id="me-groups">0</b><span>今日组数</span></div>
-      <div class="stat"><b id="me-water">0</b><span>今日喝水(ml)</span></div>
-      <div class="stat"><b id="me-days">1</b><span>坚持天数</span></div>
+      <div class="stat"><b id="me-streak">0</b><span>连续天数</span></div>
+      <div class="stat"><b id="me-days">0</b><span>累计打卡</span></div>
     </div>
   </div>
   <div class="sec-title">目标设置</div>
   <div class="card" style="padding:6px 18px;">
-    <div class="task-row">
-      <div class="task-info"><b>每日提肛目标</b><div>每天完成的组数</div></div>
+    <div class="task-row" style="cursor:default;">
+      <div class="task-info"><b>每日目标</b><div>每天完成的组数</div></div>
       <button class="btn-plus" style="width:40px;" id="kg-minus">−</button>
       <b style="width:30px;text-align:center;" id="kg-target">3</b>
       <button class="btn-plus" style="width:40px;" id="kg-plus">＋</button>
     </div>
-    <div class="task-row">
+    <div class="task-row" style="cursor:default;">
       <div class="task-info"><b>每次收紧时长</b><div>按住蜜桃保持的秒数</div></div>
       <button class="btn-plus" style="width:40px;" id="hd-minus">−</button>
       <b style="width:30px;text-align:center;" id="hd-target">5</b>
@@ -339,7 +315,7 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 <!-- ================= 底部标签 ================= -->
 <div class="tabbar">
   <div class="tab on" data-page="pg-home"><span class="ic">🏠</span>首页</div>
-  <div class="tab" data-page="pg-plan"><span class="ic">📋</span>计划</div>
+  <div class="tab" data-page="pg-checkin"><span class="ic">📅</span>打卡</div>
   <div class="tab" data-page="pg-me"><span class="ic">👤</span>我的</div>
 </div>
 
@@ -349,25 +325,45 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 var $=function(id){return document.getElementById(id);};
 
 /* ---------- 数据 ---------- */
-var KEY="qingtigang_v1";
-function today(){var d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+var KEY="qingtigang_v2";
+function dstr(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function today(){return dstr(new Date());}
 var S;
 function load(){
   try{S=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){S={};}
-  if(S.day!==today()){
-    if(S.day){ // 跨天：若昨天完成过任意一项，坚持天数+1
-      if((S.kegelGroups||0)>0||(S.waterMl||0)>0) S.days=(S.days||1)+1;
-    }
-    S={day:today(),kegelGroups:0,waterMl:0,days:S.days||1,
-       kegelTarget:S.kegelTarget||3,holdSec:S.holdSec||5,planItems:S.planItems||[]};
-    save();
+  // 从旧版本(v1)迁移设置
+  if(!S._migrated){
+    try{
+      var old=JSON.parse(localStorage.getItem("qingtigang_v1"));
+      if(old){
+        if(old.kegelTarget)S.kegelTarget=old.kegelTarget;
+        if(old.holdSec)S.holdSec=old.holdSec;
+        if(old.days>1){ // 把旧版坚持天数折算成历史打卡
+          var d=new Date();
+          for(var i=1;i<old.days;i++){d.setDate(d.getDate()-1);S.checkins=S.checkins||{};S.checkins[dstr(d)]=true;}
+        }
+      }
+    }catch(e){}
+    S._migrated=true;
   }
   if(!S.kegelTarget)S.kegelTarget=3;
   if(!S.holdSec)S.holdSec=5;
-  if(!S.planItems)S.planItems=[];
+  if(!S.checkins)S.checkins={};
+  if(!S.totalGroups)S.totalGroups=0;
+  if(S.day!==today()){S.day=today();S.kegelGroups=0;}
+  if(typeof S.kegelGroups!=="number")S.kegelGroups=0;
+  save();
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 load();
+
+function streak(){
+  var n=0,d=new Date();
+  if(!S.checkins[dstr(d)])d.setDate(d.getDate()-1); // 今天未达标则从昨天往前数
+  while(S.checkins[dstr(d)]){n++;d.setDate(d.getDate()-1);}
+  return n;
+}
+function totalDays(){var n=0;for(var k in S.checkins)if(S.checkins[k])n++;return n;}
 
 /* ---------- 震动 & 提示音 ---------- */
 var audioCtx=null;
@@ -384,7 +380,7 @@ function beep(f,d){
 }
 var hapticEl=null;
 function haptic(){
-  try{ // iOS 17.4+ switch 控件的触觉反馈技巧
+  try{
     if(!hapticEl){
       var l=document.createElement("label");
       var i=document.createElement("input");
@@ -405,6 +401,7 @@ function show(id){
   var tabs=document.querySelectorAll(".tab");
   for(var j=0;j<tabs.length;j++)tabs[j].classList.toggle("on",tabs[j].getAttribute("data-page")===id);
   window.scrollTo(0,0);
+  if(id==="pg-checkin")renderCal();
 }
 var tabs=document.querySelectorAll(".tab");
 for(var i=0;i<tabs.length;i++){
@@ -412,46 +409,34 @@ for(var i=0;i<tabs.length;i++){
 }
 
 /* ---------- 首页渲染 ---------- */
-function kegelDone(){return S.kegelGroups>=S.kegelTarget?1:0;}
-function waterDone(){return S.waterMl>=1600?1:0;}
+function goalMet(){return S.kegelGroups>=S.kegelTarget;}
 function render(){
-  var done=kegelDone()+waterDone(),total=2;
-  $("home-done").textContent=done;$("home-total").textContent=total;
-  $("home-tip").textContent=done>=total?"今日目标全部完成，太棒了！":"再接再厉，完成剩余 "+(total-done)+" 项吧！";
-  $("home-cheer").textContent=done>=total?"全部完成，你太棒了！":(done>0?"继续保持，你很棒！":"新的一天，开始吧！");
-  $("kegel-target-txt").textContent=S.kegelTarget;
-  $("kegel-done-txt").textContent=S.kegelGroups;
-  $("water-pill").textContent="已喝 "+S.waterMl+"ml";
-  $("plan-done").textContent=done;$("plan-total").textContent=total;
+  var done=S.kegelGroups,target=S.kegelTarget;
+  $("home-done").textContent=done;$("home-total").textContent=target;
+  $("home-tip").textContent=goalMet()?"今日目标达成，已自动打卡！":"还差 "+(target-done)+" 组，加油！";
+  $("home-cheer").textContent=goalMet()?"今日目标达成，太棒了！":(done>0?"继续保持，你很棒！":"新的一天，开始吧！");
+  $("kegel-target-txt").textContent=target;
+  $("kegel-done-txt").textContent=done;
+  $("plan-target-txt").textContent=target;
+  $("plan-hold-txt").textContent=S.holdSec;
   var s=new Date(),e=new Date();e.setDate(e.getDate()+30);
   $("plan-cycle-txt").textContent="计划周期："+(s.getMonth()+1)+"月"+s.getDate()+"日 - "+(e.getMonth()+1)+"月"+e.getDate()+"日";
-  $("me-groups").textContent=S.kegelGroups;
-  $("me-water").textContent=S.waterMl;
-  $("me-days").textContent=S.days;
-  $("kg-target").textContent=S.kegelTarget;
+  $("me-groups").textContent=done;
+  $("me-streak").textContent=streak();
+  $("me-days").textContent=totalDays();
+  $("kg-target").textContent=target;
   $("hd-target").textContent=S.holdSec;
   $("hold-sec-txt").textContent=S.holdSec;
+  $("ck-streak").textContent=streak();
+  $("ck-total").textContent=totalDays();
+  $("ck-groups").textContent=S.totalGroups;
+  $("ck-note").textContent=goalMet()?"🎉 今日已达标，打卡成功！明天继续～":"完成今日目标 "+target+" 组，即可自动打卡 ✓";
 }
 render();
 
-$("row-water").addEventListener("click",function(){
-  S.waterMl+=200;save();render();haptic();beep(520,0.08);
-});
 $("row-kegel").addEventListener("click",function(){startExercise();});
 $("btn-go-ex").addEventListener("click",function(ev){ev.stopPropagation();startExercise();});
-$("row-plan").addEventListener("click",function(){show("pg-plan");});
-$("btn-plan-go").addEventListener("click",function(){show("pg-home");});
-
-/* 计划页可添加事项 */
-var addables=document.querySelectorAll(".gitem.dashed");
-for(var k=0;k<addables.length;k++){
-  addables[k].addEventListener("click",function(){
-    this.classList.toggle("added");
-    var sp=this.querySelector("span");
-    sp.textContent=this.classList.contains("added")?"已加入计划":"点击添加";
-    haptic();
-  });
-}
+$("row-plan").addEventListener("click",function(){show("pg-me");});
 
 /* 我的页设置 */
 $("kg-minus").addEventListener("click",function(){if(S.kegelTarget>1){S.kegelTarget--;save();render();haptic();}});
@@ -459,8 +444,37 @@ $("kg-plus").addEventListener("click",function(){if(S.kegelTarget<10){S.kegelTar
 $("hd-minus").addEventListener("click",function(){if(S.holdSec>2){S.holdSec--;save();render();haptic();}});
 $("hd-plus").addEventListener("click",function(){if(S.holdSec<10){S.holdSec++;save();render();haptic();}});
 $("btn-reset").addEventListener("click",function(){
-  if(confirm("确定要清空全部数据吗？")){localStorage.removeItem(KEY);load();render();}
+  if(confirm("确定要清空全部数据吗？")){localStorage.removeItem(KEY);load();render();renderCal();}
 });
+
+/* ---------- 打卡日历 ---------- */
+var calDate=new Date();calDate.setDate(1);
+$("cal-prev").addEventListener("click",function(){calDate.setMonth(calDate.getMonth()-1);renderCal();haptic();});
+$("cal-next").addEventListener("click",function(){calDate.setMonth(calDate.getMonth()+1);renderCal();haptic();});
+function renderCal(){
+  var y=calDate.getFullYear(),m=calDate.getMonth();
+  $("cal-title").textContent=y+" 年 "+(m+1)+" 月";
+  var g=$("cal-grid");g.innerHTML="";
+  var wks=["一","二","三","四","五","六","日"];
+  for(var i=0;i<7;i++){
+    var w=document.createElement("div");w.className="wk";w.textContent=wks[i];g.appendChild(w);
+  }
+  var first=new Date(y,m,1);
+  var lead=(first.getDay()+6)%7; // 周一起始
+  var prevDays=new Date(y,m,0).getDate();
+  for(var p=lead-1;p>=0;p--){
+    var c=document.createElement("div");c.className="cal-cell dim";c.textContent=prevDays-p;g.appendChild(c);
+  }
+  var days=new Date(y,m+1,0).getDate();
+  var tstr=today();
+  for(var d=1;d<=days;d++){
+    var cell=document.createElement("div");cell.className="cal-cell";cell.textContent=d;
+    var key=y+"-"+(m+1)+"-"+d;
+    if(key===tstr)cell.classList.add("today");
+    if(S.checkins[key])cell.classList.add("done");
+    g.appendChild(cell);
+  }
+}
 
 /* ---------- 下一条提醒倒计时 ---------- */
 var REMIND_HOURS=[9,11,13,15,17,19,21];
@@ -481,7 +495,36 @@ setInterval(tickRemind,1000);tickRemind();
 
 /* ---------- 练习页：按住=收紧 ---------- */
 var REPS=10, REST_SEC=4;
-var ex={phase:"idle",rep:1,left:0,timer:null};
+var ex={phase:"idle",rep:1,left:0,timer:null,encTimer:null,encStart:null};
+
+var ENCOURAGE=[
+  "坚持住，你可以的！💪",
+  "很好，保持这个力度～",
+  "再撑一下，就快到了！",
+  "呼吸放轻松，别憋气 🌿",
+  "每一次坚持都算数！",
+  "蜜桃在为你加油哦 🍑",
+  "稳住，你比想象中更强！",
+  "做得很好，继续保持～"
+];
+var encIdx=0;
+function startEncourage(){
+  stopEncourage();
+  encIdx=Math.floor(Math.random()*ENCOURAGE.length);
+  ex.encTimer=setInterval(function(){
+    var h=$("ex-hint");
+    h.textContent=ENCOURAGE[encIdx%ENCOURAGE.length];
+    h.classList.remove("encourage");
+    void h.offsetWidth; // 重启动画
+    h.classList.add("encourage");
+    encIdx++;
+  },1600);
+}
+function stopEncourage(){
+  clearTimeout(ex.encStart);
+  clearInterval(ex.encTimer);
+  $("ex-hint").classList.remove("encourage");
+}
 
 function exSet(phase){
   ex.phase=phase;
@@ -511,7 +554,7 @@ function exCountdown(sec,onDone){
     else{$("ex-timer").textContent=ex.left;if(ex.left<=3)beep(440,0.05);}
   },1000);
 }
-function exStopTimers(){clearInterval(ex.timer);}
+function exStopTimers(){clearInterval(ex.timer);stopEncourage();}
 
 function startExercise(){
   ex.rep=1;exStopTimers();exSet("idle");
@@ -521,9 +564,12 @@ function startExercise(){
 }
 function finishGroup(){
   exStopTimers();exSet("idle");
-  S.kegelGroups++;save();render();
+  S.kegelGroups++;S.totalGroups++;
+  var justChecked=false;
+  if(goalMet()&&!S.checkins[today()]){S.checkins[today()]=true;justChecked=true;}
+  save();render();
   haptic();beep(660,0.15);setTimeout(function(){beep(880,0.2);},160);
-  toast("🎉 完成 1 组！共 "+REPS+" 次");
+  toast(justChecked?"🎉 完成 1 组，今日打卡成功！":"🎉 完成 1 组！共 "+REPS+" 次");
   setTimeout(function(){show("pg-home");},1400);
 }
 var toastT=null;
@@ -538,9 +584,10 @@ function onDown(ev){
   if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume();
   if(ex.phase!=="idle"&&ex.phase!=="ready")return;
   exSet("hold");haptic();beep(520,0.08);
+  ex.encStart=setTimeout(startEncourage,1600); // 先显示「保持呼吸」，随后开始鼓励
   exCountdown(S.holdSec,function(){
-    // 保持时间到，提示松开
-    ex.phase==="hold"&&(ex.phase="waitRelease");
+    if(ex.phase==="hold")ex.phase="waitRelease";
+    stopEncourage();
     $("ex-hint").textContent="🔔 可以松开了";
     $("ex-state").innerHTML="松开手指，放松一下";
     haptic();beep(880,0.15);
@@ -549,12 +596,10 @@ function onDown(ev){
 function onUp(ev){
   if(ev)ev.preventDefault();
   if(ex.phase==="hold"){
-    // 提前松开：这次不算
     exStopTimers();exSet("idle");
     toast("太早松开啦，这次不算，重新按住～");
     beep(300,0.15);
   }else if(ex.phase==="waitRelease"){
-    // 完整完成一次
     ex.rep++;haptic();beep(760,0.08);
     if(ex.rep>REPS){finishGroup();return;}
     exSet("release");
