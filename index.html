@@ -160,6 +160,24 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
 .cal-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle;}
 .ck-note{margin-top:16px;text-align:center;font-size:13px;color:var(--sub);line-height:1.6;}
 
+/* ===== 教程页 ===== */
+#pg-guide .card{margin-bottom:14px;}
+.gd-h{font-size:16px;font-weight:700;color:var(--green);margin-bottom:8px;}
+.gd-p{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:8px;}
+.gd-p b{color:var(--green2);}
+.gd-step{font-size:14px;line-height:1.7;padding:10px 12px;background:#f5faf7;border-radius:12px;margin-bottom:8px;}
+.gd-step b{display:inline-block;background:var(--green-soft);color:var(--green2);font-size:12px;
+  border-radius:6px;padding:1px 8px;margin-right:6px;}
+.gd-warn{display:block;font-size:12px;color:#c07a2e;margin-top:6px;}
+.gd-err{font-size:14px;line-height:1.6;color:#a8524a;background:#fdf3f2;border-radius:12px;
+  padding:9px 12px;margin-bottom:8px;}
+.gd-good{font-size:14px;line-height:1.7;color:var(--text);padding:9px 12px;background:#f5faf7;
+  border-radius:12px;margin-bottom:8px;}
+.gd-good b{color:var(--green2);}
+.big-btn{display:block;width:100%;background:var(--green);color:#fff;border:none;border-radius:99px;
+  padding:16px;font-size:16px;font-weight:700;margin-top:8px;cursor:pointer;transition:transform .12s;}
+.big-btn:active{transform:scale(.97);}
+
 /* ===== 我的 ===== */
 .me-head{display:flex;align-items:center;gap:14px;}
 .me-head .av{width:60px;height:60px;border-radius:50%;background:var(--green-soft);display:flex;align-items:center;justify-content:center;font-size:32px;}
@@ -213,6 +231,11 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
       <div class="task-info"><b>提肛练习</b><div>每组 10 次 · 今日目标 <span id="kegel-target-txt">3</span> 组</div></div>
       <span class="pill">已完成 <span id="kegel-done-txt">0</span> 组</span>
       <button class="btn-plus" id="btn-go-ex">开始</button>
+    </div>
+    <div class="task-row" id="row-guide">
+      <div class="task-ico" style="background:#fdf6e8;">📖</div>
+      <div class="task-info"><b>提肛教程与好处</b><div>怎么做才标准 · 为什么值得坚持</div></div>
+      <span class="chev" style="color:#b9cdc4;font-size:22px;">›</span>
     </div>
   </div>
 
@@ -291,6 +314,68 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
   <div class="c-peach">🍑</div>
   <div class="c-txt" id="c-txt">完成 1 组！</div>
   <div class="c-sub" id="c-sub">做得很棒，继续保持～</div>
+</div>
+
+<!-- ================= 教程页 ================= -->
+<div class="page" id="pg-guide">
+  <div class="ex-head">
+    <button class="back" id="guide-back">‹</button>
+    <div class="t">提肛教程与好处</div>
+  </div>
+
+  <div class="card">
+    <div class="gd-h">🍑 什么是提肛运动？</div>
+    <p class="gd-p">提肛运动（凯格尔运动）是锻炼<b>盆底肌</b>的动作：把肛门和会阴部位的肌肉向上、向内收紧，保持几秒后放松，反复进行。它不需要器械、不挑场地，站着、坐着、躺着都能练。</p>
+  </div>
+
+  <div class="card">
+    <div class="gd-h">🎯 第一步：找准肌肉（最重要）</div>
+    <p class="gd-p">很多人练错，是因为用错了肌肉。两个方法帮你找到盆底肌：</p>
+    <div class="gd-step"><b>方法 1</b>排尿时试着中途憋住尿流——用到的那块肌肉就是盆底肌。<span class="gd-warn">注意：此方法只用于"找感觉"，不要在排尿时做练习。</span></div>
+    <div class="gd-step"><b>方法 2</b>想象自己正在努力憋住屁——肛门向内向上收紧的那股劲儿，就是正确发力。</div>
+    <p class="gd-p">做对的感觉：<b>只有会阴部在动</b>，肚子、大腿、屁股都是放松的。可以把一只手放在肚子上检查，肚子不应该跟着绷紧。</p>
+  </div>
+
+  <div class="card">
+    <div class="gd-h">📋 第二步：标准动作流程</div>
+    <div class="gd-step"><b>1. 摆好姿势</b>新手建议仰卧屈膝、全身放松；熟练后坐姿、站姿、走路时都可以练。</div>
+    <div class="gd-step"><b>2. 收紧</b>像憋住屁一样，把肛门向上向内提起，保持 <b>5 秒</b>。力度适中，感觉肌肉被"拎起来"即可，不要拼命夹。</div>
+    <div class="gd-step"><b>3. 放松</b>彻底松开，休息 <b>4 秒</b>，让肌肉完全恢复。</div>
+    <div class="gd-step"><b>4. 重复</b>「收紧 5 秒 + 放松 4 秒」为 1 次，<b>10 次为 1 组</b>，每天 3 组（早中晚各 1 组效果更好）。</div>
+    <p class="gd-p">在本 APP 里，你只需要<b>跟着蜜桃做</b>：按住蜜桃就收紧，提示音响就松开，次数和计时都帮你数好。</p>
+  </div>
+
+  <div class="card">
+    <div class="gd-h">🌬️ 呼吸要领</div>
+    <p class="gd-p">全程<b>正常呼吸，不要憋气</b>。推荐节奏：收紧时缓缓呼气，放松时自然吸气。憋气会让腹压升高，反而抵消锻炼效果。</p>
+  </div>
+
+  <div class="card">
+    <div class="gd-h">⚠️ 常见错误，千万别这么练</div>
+    <div class="gd-err">✕ 用肚子、大腿或臀部发力代偿（只有会阴部该动）</div>
+    <div class="gd-err">✕ 憋气、脸红脖子粗地用力</div>
+    <div class="gd-err">✕ 在排尿过程中反复练习（可能影响排尿功能）</div>
+    <div class="gd-err">✕ 一次做太多（过量会导致肌肉疲劳酸痛，循序渐进）</div>
+    <div class="gd-err">✕ 三天打鱼两天晒网（盆底肌见效需要 4~8 周持续练习）</div>
+  </div>
+
+  <div class="card">
+    <div class="gd-h">✨ 坚持提肛的好处</div>
+    <div class="gd-good"><b>🩺 预防和改善痔疮</b>促进肛周血液循环，缓解静脉淤血，是医生常推荐的日常保养动作。</div>
+    <div class="gd-good"><b>💧 改善漏尿、尿失禁</b>强化尿道括约肌，咳嗽、打喷嚏、大笑时不再尴尬。</div>
+    <div class="gd-good"><b>🚹 对男性</b>改善前列腺局部血液循环，对前列腺健康和性功能有积极帮助。</div>
+    <div class="gd-good"><b>🚺 对女性</b>产后盆底肌恢复的核心训练，改善盆底松弛。</div>
+    <div class="gd-good"><b>🚽 改善排便控制</b>增强肛门括约肌力量，排便更有力、更可控。</div>
+    <div class="gd-good"><b>🧘 随时随地可做</b>开会、坐车、刷手机时都能悄悄练，零成本养生。</div>
+  </div>
+
+  <div class="card" style="background:#fdf9f3;">
+    <div class="gd-h" style="color:#b0722a;">📌 注意事项</div>
+    <p class="gd-p" style="color:#8a6d4a;">正处于痔疮急性发作期、肛周术后恢复期，或有其他盆底疾病者，请先咨询医生再开始练习。练习中出现疼痛应立即停止。本教程为一般健康建议，不能替代医疗诊断。</p>
+  </div>
+
+  <button class="big-btn" id="guide-go">学会了，开始练一组 🍑</button>
+  <div style="height:10px;"></div>
 </div>
 
 <!-- ================= 打卡页 ================= -->
@@ -506,6 +591,13 @@ render();
 $("row-kegel").addEventListener("click",function(){startExercise();});
 $("btn-go-ex").addEventListener("click",function(ev){ev.stopPropagation();startExercise();});
 $("row-plan").addEventListener("click",function(){show("pg-me");});
+$("row-guide").addEventListener("click",function(){
+  show("pg-guide");
+  var tabs=document.querySelectorAll(".tab");
+  for(var j=0;j<tabs.length;j++)tabs[j].classList.remove("on");
+});
+$("guide-back").addEventListener("click",function(){show("pg-home");});
+$("guide-go").addEventListener("click",function(){startExercise();});
 
 /* 我的页设置 */
 $("kg-minus").addEventListener("click",function(){if(S.kegelTarget>1){S.kegelTarget--;save();render();haptic();}});
