@@ -27,7 +27,7 @@
 | 文件 | 作用 |
 |---|---|
 | `index.html` | **整个 APP 本体**：HTML+CSS+JS 全部内嵌，单文件 |
-| `sw.js` | Service Worker 离线缓存。**每次改代码必须升级里面的 `CACHE` 版本号**（当前 `qingtigang-v3`），否则用户手机不更新 |
+| `sw.js` | Service Worker 离线缓存。**每次改代码必须升级里面的 `CACHE` 版本号**（当前 `qingtigang-v5`），同时把 `index.html` 里「我的」页的 `app-ver` 显示号同步改掉，否则用户手机不更新 |
 | `manifest.webmanifest` | PWA 配置（standalone 全屏、图标、主题色 #edf5f0） |
 | `apple-touch-icon.png` (180×180) | iOS 主屏幕图标（Python/PIL 生成的蜜桃图） |
 | `icon-512.png` (512×512) | manifest 图标（由 180 的放大而来，如需重绘注意） |
@@ -69,7 +69,8 @@
    ```
    - 网络偶发 SSL 握手失败（用户有代理/VPN），push 失败就重试
    - 手机端更新：APP 关闭重开一两次（SW 换新缓存）；顽固就删主屏幕图标重装
-8. **GitHub Pages 免费版要求公开仓库**：用户知情并接受现状（数据在手机本地，仓库无隐私）。若用户改主意想私有化，需迁移到 Cloudflare Pages / Vercel。
+8. **自动更新机制（v5 起）**：`index.html` 头部脚本在打开时和每 60 秒调用 `reg.update()`；新 SW 接管（controllerchange）时自动 `location.reload()`。若正在练习页则设 `window.__pendingReload`，回到其他页面时再刷新。首次安装（无 controller）不刷新。「我的」页有「检查更新」按钮（`btn-update`）手动触发。
+9. **GitHub Pages 免费版要求公开仓库**：用户知情并接受现状（数据在手机本地，仓库无隐私）。若用户改主意想私有化，需迁移到 Cloudflare Pages / Vercel。
 
 ## 六、环境备忘（本机）
 
