@@ -12,9 +12,28 @@
 <link rel="manifest" href="manifest.webmanifest">
 <title>轻提纲</title>
 <script>
+var SW_REG = null;
 if ("serviceWorker" in navigator && location.protocol === "https:") {
+  // 首次加载时是否已有 SW 控制（区分"第一次安装"与"版本更新"）
+  var hadController = !!navigator.serviceWorker.controller;
+  var reloaded = false;
+  navigator.serviceWorker.addEventListener("controllerchange", function () {
+    // 新版 SW 接管 → 自动刷新一次，加载新页面
+    if (hadController && !reloaded) {
+      var ex = document.getElementById("pg-exercise");
+      if (ex && ex.classList.contains("active")) {
+        window.__pendingReload = true; // 练习中不打扰，回到首页时再刷新
+        return;
+      }
+      reloaded = true; location.reload();
+    }
+  });
   window.addEventListener("load", function () {
-    navigator.serviceWorker.register("sw.js").catch(function () {});
+    navigator.serviceWorker.register("sw.js").then(function (reg) {
+      SW_REG = reg;
+      reg.update(); // 打开即检查更新
+      setInterval(function () { reg.update(); }, 60000); // 保持打开时每分钟检查
+    }).catch(function () {});
   });
 }
 </script>
@@ -431,7 +450,8 @@ h1.appname{text-align:center;font-size:19px;font-weight:600;margin:6px 0 14px;}
     </div>
   </div>
   <button class="ghost-btn" id="btn-reset">清空全部数据，重新开始</button>
-  <div class="ver">轻提纲 · 本地存储，数据不上传</div>
+  <button class="ghost-btn" id="btn-update" style="color:var(--green2);border-color:#cfe4d9;">检查更新</button>
+  <div class="ver">轻提纲 <span id="app-ver">v5</span> · 本地存储，数据不上传</div>
 </div>
 
 <!-- ================= 底部标签 ================= -->
@@ -532,6 +552,7 @@ document.addEventListener("visibilitychange",function(){
 
 /* ---------- 页面切换 ---------- */
 function show(id){
+  if(window.__pendingReload&&id!=="pg-exercise"){location.reload();return;}
   var ps=document.querySelectorAll(".page");
   for(var i=0;i<ps.length;i++)ps[i].classList.remove("active");
   $(id).classList.add("active");
@@ -606,6 +627,22 @@ $("hd-minus").addEventListener("click",function(){if(S.holdSec>2){S.holdSec--;sa
 $("hd-plus").addEventListener("click",function(){if(S.holdSec<10){S.holdSec++;save();render();haptic();}});
 $("btn-reset").addEventListener("click",function(){
   if(confirm("确定要清空全部数据吗？")){localStorage.removeItem(KEY);load();render();renderCal();}
+});
+$("btn-update").addEventListener("click",function(){
+  var btn=this;
+  btn.textContent="检查中…";
+  if(window.SW_REG){
+    SW_REG.update().then(function(){
+      setTimeout(function(){
+        if(btn.textContent==="检查中…"){btn.textContent="已是最新版本 ✓";}
+        setTimeout(function(){btn.textContent="检查更新";},2000);
+      },2500);
+      // 若发现新版本，SW 接管时会自动刷新页面
+    }).catch(function(){btn.textContent="网络异常，稍后再试";setTimeout(function(){btn.textContent="检查更新";},2000);});
+  }else{
+    btn.textContent="当前环境不支持自动更新";
+    setTimeout(function(){btn.textContent="检查更新";},2000);
+  }
 });
 
 /* ---------- 打卡日历 ---------- */

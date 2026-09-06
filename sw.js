@@ -1,4 +1,4 @@
-var CACHE = "qingtigang-v4";
+var CACHE = "qingtigang-v5";
 var ASSETS = [
   "./",
   "./index.html",
